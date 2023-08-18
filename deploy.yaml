@@ -1,0 +1,151 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mseconsumer
+  labels:
+    app: mseconsumer
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mseconsumer
+  template:
+    metadata:
+      labels:
+        app: mseconsumer
+    spec:
+      containers:
+        - env:
+            - name: nacos_address #注册中心的endpoint
+              value: 'mse-fd0fc7d0-nacos-ans.mse.aliyuncs.com:8848'
+            - name: gray_env  #环境标识，基线环境传base,灰度环境传gray
+              value: base
+            - name: mq_address #rocketMq的endpoint
+              value: 'rmq-cn-x0r3bu0yp03-vpc.cn-hangzhou.rmq.aliyuncs.com:8080'
+          image: 'registry.cn-hangzhou.aliyuncs.com/jinfengdocker/mseconsumer:v1'
+          imagePullPolicy: Always
+          name: mseconsumer
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources:
+            limits:
+              cpu: '2'
+              memory: 2Gi
+            requests:
+              cpu: '1'
+              memory: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mseconsumer-gray
+  labels:
+    app: mseconsumer
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mseconsumer-gray
+  template:
+    metadata:
+      labels:
+        app: mseconsumer-gray
+    spec:
+      containers:
+        - env:
+            - name: nacos_address #注册中心的endpoint
+              value: 'mse-fd0fc7d0-nacos-ans.mse.aliyuncs.com:8848'
+            - name: gray_env  #环境标识，基线环境传base,灰度环境传gray
+              value: gray
+            - name: mq_address #rocketMq的endpoint
+              value: 'rmq-cn-x0r3bu0yp03-vpc.cn-hangzhou.rmq.aliyuncs.com:8080'
+          image: 'registry.cn-hangzhou.aliyuncs.com/jinfengdocker/mseconsumer:v1'
+          imagePullPolicy: Always
+          name: mseconsumer
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources:
+            limits:
+              cpu: '2'
+              memory: 2Gi
+            requests:
+              cpu: '1'
+              memory: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mseprovider
+  labels:
+    app: mseprovider
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mseprovider
+  template:
+    metadata:
+      labels:
+        app: mseprovider
+    spec:
+      containers:
+        - env:
+            - name: nacos_address #注册中心的endpoint
+              value: 'mse-fd0fc7d0-nacos-ans.mse.aliyuncs.com:8848'
+            - name: gray_env  #环境标识，基线环境传base,灰度环境传gray
+              value: base
+            - name: mq_address #rocketMq的endpoint
+              value: 'rmq-cn-x0r3bu0yp03-vpc.cn-hangzhou.rmq.aliyuncs.com:8080'
+          image: 'registry.cn-hangzhou.aliyuncs.com/jinfengdocker/mseprovider:v1'
+          imagePullPolicy: Always
+          name: mseprovider
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources:
+            limits:
+              cpu: '2'
+              memory: 2Gi
+            requests:
+              cpu: '1'
+              memory: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mseprovider-gray
+  labels:
+    app: mseprovider-gray
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mseprovider-gray
+  template:
+    metadata:
+      labels:
+        app: mseprovider-gray
+    spec:
+      containers:
+        - env:
+            - name: nacos_address #注册中心的endpoint
+              value: 'mse-fd0fc7d0-nacos-ans.mse.aliyuncs.com:8848'
+            - name: gray_env  #环境标识，基线环境传base,灰度环境传gray
+              value: gray
+            - name: mq_address #rocketMq的endpoint
+              value: 'rmq-cn-x0r3bu0yp03-vpc.cn-hangzhou.rmq.aliyuncs.com:8080'
+          image: 'registry.cn-hangzhou.aliyuncs.com/jinfengdocker/mseprovider:v1'
+          imagePullPolicy: Always
+          name: mseprovider-gray
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources:
+            limits:
+              cpu: '2'
+              memory: 2Gi
+            requests:
+              cpu: '1'
+              memory: 1Gi
