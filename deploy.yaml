@@ -41,7 +41,7 @@ kind: Deployment
 metadata:
   name: mseconsumer-gray
   labels:
-    app: mseconsumer
+    app: mseconsumer-gray
 spec:
   replicas: 2
   selector:
@@ -62,7 +62,7 @@ spec:
               value: 'rmq-cn-x0r3bu0yp03-vpc.cn-hangzhou.rmq.aliyuncs.com:8080'
           image: 'registry.cn-hangzhou.aliyuncs.com/jinfengdocker/mseconsumer:v1'
           imagePullPolicy: Always
-          name: mseconsumer
+          name: mseconsumer-gray
           ports:
             - containerPort: 8080
               protocol: TCP
